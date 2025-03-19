@@ -3,6 +3,7 @@ from tkinter import ttk
 from tkinter import Canvas, PhotoImage, Entry, Button
 from pathlib import Path
 from PIL import Image, ImageTk
+import Api.Sale_Api as sale_api
 
 class Admin_Users:
     def __init__(self):
@@ -24,7 +25,10 @@ class Admin_Users:
         self.canvas.place(x=0, y=0)
 
 
-        assets_path = Path(r"C:\DoAn\Image\Admin\Check Sales")
+        # assets_path = Path(r"C:\DoAn\Image\Admin\Check Sales")
+        assets_path = Path("/home/long/Downloads/doancuoiky-nhom1/Image/Admin/CheckSales")
+
+
 
         self.background_img = PhotoImage(file=assets_path / "Background.png")
         self.logout_image = PhotoImage(file=assets_path / "Button_Logout.png")
@@ -96,6 +100,28 @@ class Admin_Users:
         self.tree.column("quantity", width=60)
         self.tree.column("price", width=60)
         self.tree.column("total", width=80)
+
+        self.load_data()
+
+    def load_data(self):
+    # Clear existing data
+        for item in self.tree.get_children():
+            self.tree.delete(item)
+
+        # Fetch data from MongoDB
+        api = sale_api.Sale_Api()
+        sales_data = api.sales.find()
+
+        for sale in sales_data:
+            self.tree.insert("", "end", values=(
+                sale.get("invoice_id"),
+                sale.get("invoice_date").strftime("%Y-%m-%d") if sale.get("invoice_date") else "",
+                sale.get("hotel"),
+                sale.get("type_room"),
+                sale.get("quantity"),
+                sale.get("price"),
+                sale.get("total")
+            ))  # <-- Closing parentheses added here
 
     def run(self):
         self.window.mainloop()

@@ -13,6 +13,7 @@ import Api.User_Api as user_api
 # import Modules.Signup.Signup_View as suv
 import Modules.Admin.Component.Hotels.Hotels_View as hv
 import Modules.Admin.Component.Users.Users_View as uv
+import Modules.Admin.Component.Checksales.Checksales_View as sl
 
 class Admin_Process:
 
@@ -91,6 +92,8 @@ class Admin_Process:
             app = hv.Hotel_View()
         elif view_type == "user":
             app = uv.Admin_Users()
+        elif view_type == "sale":
+            app = sl.Admin_Users()
         else:
             print("Error: Invalid view type")
             return  # Exit function if invalid type
