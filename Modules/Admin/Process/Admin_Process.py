@@ -70,8 +70,8 @@ class Admin_Process:
         hotel_name = obj.entry_1.get()  # Get Hotel Name
         description = obj.entry_2.get()  # Get Description
         type_room = obj.entry_3.get()  # Get Type Room
-        price = float(obj.entry_4.get())  # Convert price to float
-        stock = int(obj.entry_5.get())  # Convert stock to integer
+        price = (obj.entry_4.get())  # Convert price to float
+        stock = (obj.entry_5.get())  # Convert stock to integer
 
         inventory_data = {
             "hotel_name": hotel_name,
@@ -84,10 +84,10 @@ class Admin_Process:
         if type == "update":
             # Update only price and stock based on hotel_name and type_room
             updated_fields = {"price": price, "stock": stock,  "description": description,
-            "type_room": type_room}
+            "type_room": type_room, "hotel_name": hotel_name}
             api = inventory_api.Inventory_Api()
-            api.update_inventory(hotel_name, type_room, updated_fields)
-            print(f"Inventory updated for {hotel_name} - {type_room}")
+            api.update_inventory(hotel_name, updated_fields)
+            print(f"Inventory updated for {hotel_name} ")
 
         else:
             messagebox.showerror("Error", "Invalid action type!")

@@ -98,8 +98,8 @@ class Admin_Users:
         self.entry_3.place(x=177, y=289, width=116.5, height=28)
 
 
-        self.background_image = Image.open("C:/DoAn/Image/Admin/Users/PlainTextbox.png")  # Thay thế với đường dẫn ảnh của bạn
-        # self.background_image = Image.open("/home/long/Downloads/doancuoiky-nhom1/Image/Admin/Users/PlainTextbox.png")  # Thay thế với đường dẫn ảnh của bạn
+        # self.background_image = Image.open("C:/DoAn/Image/Admin/Users/PlainTextbox.png")  # Thay thế với đường dẫn ảnh của bạn
+        self.background_image = Image.open("/home/long/Downloads/doancuoiky-nhom1/Image/Admin/Users/PlainTextbox.png")  # Thay thế với đường dẫn ảnh của bạn
         self.background_image = self.background_image.resize((20, 244))  # Điều chỉnh kích thước ảnh cho khung
         self.background_photo = ImageTk.PhotoImage(self.background_image)
 

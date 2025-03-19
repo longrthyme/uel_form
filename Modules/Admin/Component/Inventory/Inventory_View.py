@@ -59,7 +59,8 @@ class Admin_Users:
         self.search_button.place(x=547, y=173, width=119, height=32)
 
         self.update_button = Button(image=self.update_image, borderwidth=0, highlightthickness=0,
-                                                    command=lambda: adp.Admin_Process.inventory_action_handle(self, 'update'))
+                                                        command=lambda: [adp.Admin_Process.inventory_action_handle(self, 'update'), self.load_data()]
+        )
 
         self.update_button.place(x=38, y=440, width=130, height=40)      
 
@@ -117,7 +118,7 @@ class Admin_Users:
         self.table_frame.place(x=354,y=215)
 
         # Tạo Treeview (Bảng)
-        self.columns = ("hotel_name", "description", "type_room", "price")
+        self.columns = ("hotel_name", "description", "type_room", "price", "stock")
         self.tree = ttk.Treeview(self.table_frame, columns=self.columns, show="headings", height=9)
         self.tree.pack()
 
@@ -126,14 +127,40 @@ class Admin_Users:
         self.tree.heading("description", text="Description")
         self.tree.heading("type_room", text="Type Room")
         self.tree.heading("price", text="Price")
+        self.tree.heading("stock", text="Stock")
 
         # Điều chỉnh độ rộng cột (tổng width = 319)
         self.tree.column("hotel_name", width=80)
-        self.tree.column("description", width=100)
+        self.tree.column("description", width=70)
         self.tree.column("type_room", width=80)
         self.tree.column("price", width=50)
+        self.tree.column("stock", width=30)
+
+        self.tree.bind("<<TreeviewSelect>>", self.on_row_select)
 
         self.load_data()
+    
+    def on_row_select(self, event):
+        """Load selected row data into input fields"""
+        selected_item = self.tree.selection()  # Get selected row
+        if selected_item:
+            values = self.tree.item(selected_item[0], "values")  # Get row values
+
+            # Set values in entry fields
+            self.entry_1.delete(0, tk.END)
+            self.entry_1.insert(0, values[0])  # Hotel Name
+
+            self.entry_2.delete(0, tk.END)
+            self.entry_2.insert(0, values[1])  # Description
+
+            self.entry_3.delete(0, tk.END)
+            self.entry_3.insert(0, values[2])  # Type Room
+
+            self.entry_4.delete(0, tk.END)
+            self.entry_4.insert(0, values[3])  # Price
+
+            self.entry_5.delete(0, tk.END)
+            self.entry_5.insert(0, values[4])  # Stock
     
     def load_data(self):
         for item in self.tree.get_children():
@@ -148,7 +175,8 @@ class Admin_Users:
                 item.get("hotel_name", ""),
                 item.get("description", ""),
                 item.get("type_room", ""),
-                str(item.get("price", ""))
+                str(item.get("price", "")),
+                str(item.get("stock", ""))
             ))
 
 

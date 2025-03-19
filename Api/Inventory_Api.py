@@ -9,18 +9,18 @@ class Inventory_Api(main_api.Api):
         self.connector()
 
     # user login api
-    def update_inventory(self, hotel_name, type_room, updated_fields):
+    def update_inventory(self, hotel_name, updated_fields):
         """Update inventory details based on hotel_name and type_room."""
         result = self.inventory_collection.update_one(
-            {"hotel_name": hotel_name, "type_room": type_room},  # Find by hotel and room type
+            {"hotel_name": hotel_name},  # Find by hotel and room type
             {"$set": updated_fields}  # Update only specified fields
         )
 
         if result.modified_count > 0:
-            messagebox.showinfo("Success", f"Inventory updated for {hotel_name} - {type_room}.")
+            messagebox.showinfo("Success", f"Inventory updated for {hotel_name}")
             return True
         else:
-            messagebox.showerror("Error", f"No updates made for {hotel_name} - {type_room}.")
+            messagebox.showerror("Error", f"No updates made for {hotel_name} ")
             return False
 
 
