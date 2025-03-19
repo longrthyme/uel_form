@@ -6,11 +6,13 @@ import sys
 # sys.path.append('C:/DoAn/doancuoiky-nhom1/Modules')
 # # sys.path.append('c:/DoAn/doancuoiky-nhom1')
 import Api.Hotel_Api as hotel_api
+import Api.User_Api as user_api
+
 # import Modules.Admin.Landing_View as av
 # import Modules.User.User_Landing_View as uv
 # import Modules.Signup.Signup_View as suv
 import Modules.Admin.Component.Hotels.Hotels_View as hv
-
+import Modules.Admin.Component.Users.Users_View as uv
 
 class Admin_Process:
 
@@ -51,8 +53,46 @@ class Admin_Process:
         obj.entry_4.delete(0, "end")
         obj.entry_5.delete(0, "end")
         
+    
     @staticmethod
-    def button_handle(self):
+    def user_action_handle(obj, type):
+        # type: update, delete, create new 
+        username = obj.entry_1.get()  # Get Hotel ID
+        password = obj.entry_2.get()  # Get Hotel Name
+        role = obj.entry_3.get()  # Get Address
+
+        print(f"User action: {type} with username: {username} and password: {password} and role: {role}")
+
+        user = {
+            "username": username,
+            "password": password,
+            "role": role
+        }
+
+        api = user_api.User_Api()
+
+        if type == "create":
+            api.create_user(user)
+
+        elif type == "update":
+            updated_fields = {"password": password, "role": role}
+            api.update_user(username, updated_fields)
+
+        else: 
+            # delete user 
+            api.delete_user(username)
+            # pass 
+
+    @staticmethod
+    def button_handle(self, view_type):
+        
         self.window.destroy()
-        app = hv.Hotel_View()
+        if view_type == "hotel":
+            app = hv.Hotel_View()
+        elif view_type == "user":
+            app = uv.Admin_Users()
+        else:
+            print("Error: Invalid view type")
+            return  # Exit function if invalid type
+
         app.window.mainloop()

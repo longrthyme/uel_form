@@ -66,7 +66,9 @@ class Hotel_View:
         self.hotels_button = Button(image=self.hotels_image, borderwidth=0, highlightthickness=0)
         self.hotels_button.place(x=358, y=90, width=144, height=48)
 
-        self.users_button = Button(image=self.user_image, borderwidth=0, highlightthickness=0)
+        self.users_button = Button(image=self.user_image, borderwidth=0, highlightthickness=0,
+                                                command=lambda: adp.Admin_Process.button_handle(self, 'user'))
+
         self.users_button.place(x=524, y=90, width=144, height=48)
 
         self.remove_button = Button(image=self.remove_image, borderwidth=0, highlightthickness=0,

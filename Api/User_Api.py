@@ -1,5 +1,6 @@
 import Api.Main_Api as main_api
 import datetime
+from tkinter import messagebox
 
 
 class User_Api(main_api.Api):
@@ -9,6 +10,41 @@ class User_Api(main_api.Api):
     def __init__(self):
         super().__init__()
         self.connector()
+
+    def create_user(self, user):
+        """Create a new user with username, password, and role."""
+        if not user.get("username") or not user.get("password") or not user.get("role"):
+            messagebox.showerror("Error", "Username, password, and role are required")
+            return False  # Validation failed
+
+        result = self.users_collection.insert_one(user)
+        messagebox.showinfo("Success", f"User created successfully! ID: {result.inserted_id}")
+        return True
+
+    def update_user(self, username, updated_fields):
+        """Update user details based on username."""
+        result = self.users_collection.update_one(
+            {"username": username},  # Find user by username
+            {"$set": updated_fields}  # Update specific fields
+        )
+
+        if result.modified_count > 0:
+            messagebox.showinfo("Success", f"User '{username}' updated successfully.")
+            return True
+        else:
+            messagebox.showerror("Info", f"No updates made for user '{username}'.")
+            return False
+
+    def delete_user(self, username):
+        """Delete a user by username."""
+        result = self.users_collection.delete_one({"username": username})
+
+        if result.deleted_count > 0:
+            messagebox.showinfo("Success", f"User '{username}' deleted successfully.")
+            return True
+        else:
+            messagebox.showerror("Error", f"User '{username}' not found.")
+            return False
 
     # get last Invoice_ID from invoice collection
     def get_last_invoice_id(self):

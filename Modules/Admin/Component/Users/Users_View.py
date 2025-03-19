@@ -3,6 +3,7 @@ from tkinter import ttk
 from tkinter import Canvas, PhotoImage, Entry, Button
 from pathlib import Path
 from PIL import Image, ImageTk
+import Modules.Admin.Process.Admin_Process as adp
 
 class Admin_Users:
     def __init__(self):
@@ -24,7 +25,9 @@ class Admin_Users:
         self.canvas.place(x=0, y=0)
 
 
-        assets_path = Path(r"C:\DoAn\Image\Admin\Users")
+        # assets_path = Path(r"C:\DoAn\Image\Admin\Users")
+        assets_path = Path("/home/long/Downloads/doancuoiky-nhom1/Image/Admin/Users")
+
 
         self.background_img = PhotoImage(file=assets_path / "Background.png")
         self.logout_image = PhotoImage(file=assets_path / "Button_Logout.png")
@@ -35,7 +38,7 @@ class Admin_Users:
         self.update_image = PhotoImage(file=assets_path / "Button_Update.png")
         self.user_image = PhotoImage(file=assets_path / "Button_User.png")
         self.hotels_image = PhotoImage(file=assets_path / "Button_Hotels.png")
-        self.textbox_image = PhotoImage(file=assets_path / "Textbox.png")
+        self.textbox_image = PhotoImage(file=assets_path / "TextBox.png")
         self.createnew_image = PhotoImage(file=assets_path / "Button_Createnewuser.png")
         self.plaintextbox_image = PhotoImage(file=assets_path / "PlainTextbox.png")
         self.background = self.canvas.create_image(342.0, 246.0, image=self.background_img)
@@ -48,14 +51,18 @@ class Admin_Users:
                                 #    command=lambda: up.User_Landing_process.films_button_handle(self))
         self.account_button.place(x=38, y=28, width=39, height=39)
 
-        self.update_button = Button(image=self.update_image, borderwidth=0, highlightthickness=0)
+        self.update_button = Button(image=self.update_image, borderwidth=0, highlightthickness=0,
                                         # command=lambda: up.User_Landing_process.buytickets_button_handle(self))
+                                        command=lambda: adp.Admin_Process.user_action_handle(self, 'update'))
         self.update_button.place(x=67, y=360, width=56, height=24)
 
-        self.delete_button = Button(image=self.delete_image, borderwidth=0, highlightthickness=0)
+        self.delete_button = Button(image=self.delete_image, borderwidth=0, highlightthickness=0,
+                        command=lambda: adp.Admin_Process.user_action_handle(self, 'delete'))
         self.delete_button.place(x=136, y=360, width=63, height=24)      
 
-        self.createnew_button = Button(image=self.createnew_image, borderwidth=0, highlightthickness=0)
+        self.createnew_button = Button(image=self.createnew_image, borderwidth=0, highlightthickness=0,
+                                                command=lambda: adp.Admin_Process.user_action_handle(self, 'create'))
+
         self.createnew_button.place(x=204, y=360, width=113, height=24)  
 
         self.checksales_button = Button(image=self.checksales_image, borderwidth=0, highlightthickness=0)
@@ -64,7 +71,9 @@ class Admin_Users:
         self.inventory_button = Button(image=self.inventory_image, borderwidth=0, highlightthickness=0)
         self.inventory_button.place(x=190, y=90, width=144, height=48)
 
-        self.hotels_button = Button(image=self.hotels_image, borderwidth=0, highlightthickness=0)
+        self.hotels_button = Button(image=self.hotels_image, borderwidth=0, highlightthickness=0,
+                                                            command=lambda: adp.Admin_Process.button_handle(self, 'hotel'))
+
         self.hotels_button.place(x=358, y=90, width=144, height=48)
 
         self.users_button = Button(image=self.user_image, borderwidth=0, highlightthickness=0)

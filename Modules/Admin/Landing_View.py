@@ -45,7 +45,7 @@ class Admin_View:
         self.logout_button.place(x=524, y=26, width=130, height=40)
 
         self.films_button = Button(image=self.hotel_image, borderwidth=0, highlightthickness=0,
-                               command=lambda: adp.Admin_Process.button_handle(self))
+                               command=lambda: adp.Admin_Process.button_handle(self, 'hotel'))
         self.films_button.place(x=47, y=283, width=144, height=48)
 
         #  self.login_button = Button(image=self.login_image_1, borderwidth=0, highlightthickness=0,
@@ -59,8 +59,9 @@ class Admin_View:
                             #    command=lambda: ap.Admin_Process.sales_button_handle(self))
         self.sales_button.place(x=229, y=362.3, width=144, height=48)
 
-        self.users_button = Button(image=self.users_image, borderwidth=0, highlightthickness=0)
+        self.users_button = Button(image=self.users_image, borderwidth=0, highlightthickness=0,
                             #    command=lambda: ap.Admin_Process.users_button_handle(self))
+                            command=lambda: adp.Admin_Process.button_handle(self, 'user'))
         self.users_button.place(x=47, y=362.3, width=144, height=48)
                            
         self.window.resizable(0, 0)
