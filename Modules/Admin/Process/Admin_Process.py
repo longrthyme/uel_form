@@ -16,6 +16,7 @@ import Modules.Admin.Component.Hotels.Hotels_View as hv
 import Modules.Admin.Component.Users.Users_View as uv
 import Modules.Admin.Component.Checksales.Checksales_View as sl
 import Modules.Admin.Component.Inventory.Inventory_View as it
+import Modules.Login.Login_View as lv
 
 class Admin_Process:
 
@@ -101,18 +102,21 @@ class Admin_Process:
         print(f"User action: {type} with username: {username} and password: {password} and role: {role}")
 
         user = {
-            "username": username,
-            "password": password,
-            "role": role
+            "Username": username,
+            "Password": password,
+            "Roles": role
         }
 
         api = user_api.User_Api()
 
         if type == "create":
+            print(f"Create new user: {username}")
             api.create_user(user)
 
         elif type == "update":
-            updated_fields = {"password": password, "role": role}
+            print(f"Update user: {username} with password: {password} and role: {role}")
+            
+            updated_fields = {"Password": password, "Roles": role}
             api.update_user(username, updated_fields)
 
         else: 
@@ -132,6 +136,8 @@ class Admin_Process:
             app = sl.Admin_Users()
         elif view_type == "inventory":
             app = it.Admin_Users()
+        elif view_type == "logout":
+            app = lv.Login_View()
         else:
             messagebox.showerror("Error", "Invalid view type")
             return  # Exit function if invalid type

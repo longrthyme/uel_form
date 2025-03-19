@@ -44,8 +44,10 @@ class Hotel_View:
 
         self.background = self.canvas.create_image(342.0, 246.0, image=self.background_img)
 
-        self.logout_button = Button(image=self.logout_image, borderwidth=0, highlightthickness=0)
-                                    # command=lambda: up.User_Landing_process.log_out_button_handle(self))
+        self.logout_button = Button(image=self.logout_image, borderwidth=0, highlightthickness=0,
+                                            command=lambda: adp.Admin_Process.button_handle(self, 'logout'))
+
+                                    
         self.logout_button.place(x=544, y=26, width=130, height=40)
 
         self.account_button = Button(image=self.account_image, borderwidth=0, highlightthickness=0)

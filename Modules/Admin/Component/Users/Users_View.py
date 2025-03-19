@@ -4,6 +4,7 @@ from tkinter import Canvas, PhotoImage, Entry, Button
 from pathlib import Path
 from PIL import Image, ImageTk
 import Modules.Admin.Process.Admin_Process as adp
+import Api.User_Api as user_api
 
 class Admin_Users:
     def __init__(self):
@@ -43,8 +44,9 @@ class Admin_Users:
         self.plaintextbox_image = PhotoImage(file=assets_path / "PlainTextbox.png")
         self.background = self.canvas.create_image(342.0, 246.0, image=self.background_img)
 
-        self.logout_button = Button(image=self.logout_image, borderwidth=0, highlightthickness=0)
-                                    # command=lambda: up.User_Landing_process.log_out_button_handle(self))
+        self.logout_button = Button(image=self.logout_image, borderwidth=0, highlightthickness=0,
+                                                                        command=lambda: adp.Admin_Process.button_handle(self, 'logout'))
+
         self.logout_button.place(x=544, y=26, width=130, height=40)
 
         self.account_button = Button(image=self.account_image, borderwidth=0, highlightthickness=0)
@@ -53,15 +55,15 @@ class Admin_Users:
 
         self.update_button = Button(image=self.update_image, borderwidth=0, highlightthickness=0,
                                         # command=lambda: up.User_Landing_process.buytickets_button_handle(self))
-                                        command=lambda: adp.Admin_Process.user_action_handle(self, 'update'))
+                                        command=lambda: [adp.Admin_Process.user_action_handle(self, 'update'), self.load_data()])
         self.update_button.place(x=67, y=360, width=56, height=24)
 
         self.delete_button = Button(image=self.delete_image, borderwidth=0, highlightthickness=0,
-                        command=lambda: adp.Admin_Process.user_action_handle(self, 'delete'))
+                        command=lambda: [adp.Admin_Process.user_action_handle(self, 'delete'), self.load_data()])
         self.delete_button.place(x=136, y=360, width=63, height=24)      
 
         self.createnew_button = Button(image=self.createnew_image, borderwidth=0, highlightthickness=0,
-                                                command=lambda: adp.Admin_Process.user_action_handle(self, 'create'))
+                                                command=lambda: [adp.Admin_Process.user_action_handle(self, 'create'), self.load_data()])
 
         self.createnew_button.place(x=204, y=360, width=113, height=24)  
 
@@ -126,9 +128,47 @@ class Admin_Users:
 
         self.tree.pack(fill="both", expand=True)
 
+        self.tree.bind("<ButtonRelease-1>", self.on_row_click)
+
+        self.load_data()
+
+    def on_row_click(self, event):
+        selected_item = self.tree.selection()  # Get selected row
+        if not selected_item:
+            return
+
+        # Get row values
+        row_values = self.tree.item(selected_item[0], "values")
+        if row_values:
+            self.entry_1.delete(0, tk.END)
+            self.entry_1.insert(0, row_values[1])  # Username
+
+            self.entry_2.delete(0, tk.END)
+            self.entry_2.insert(0, row_values[2])  # Password
+
+            self.entry_3.delete(0, tk.END)
+            self.entry_3.insert(0, row_values[3])  # Roles
+
     def run(self):
         self.window.mainloop()
 
+    def load_data(self):
+    # Clear existing data in Treeview
+        for item in self.tree.get_children():
+            self.tree.delete(item)
+
+        # Fetch data from MongoDB
+        api = user_api.User_Api()
+        user_data = list(api.users_collection.find())  # Assuming `user_collection` stores user data
+
+        # Insert data into the Treeview
+        for index, item in enumerate(user_data, start=1):
+            self.tree.insert("", "end", values=(
+                index,  # STT (serial number)
+                item.get("Username", ""),
+                item.get("Password", ""),
+                item.get("Roles", "")
+            ))
 
 if __name__ == "__main__":
     app = Admin_Users()
