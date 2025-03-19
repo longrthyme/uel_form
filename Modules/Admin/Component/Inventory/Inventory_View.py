@@ -3,6 +3,9 @@ from tkinter import ttk
 from tkinter import Canvas, PhotoImage, Entry, Button
 from pathlib import Path
 from PIL import Image, ImageTk
+import Modules.Admin.Process.Admin_Process as adp
+import Api.Inventory_Api as inven_api
+
 
 class Admin_Users:
     def __init__(self):
@@ -55,22 +58,32 @@ class Admin_Users:
                                         # command=lambda: up.User_Landing_process.buytickets_button_handle(self))
         self.search_button.place(x=547, y=173, width=119, height=32)
 
-        self.update_button = Button(image=self.update_image, borderwidth=0, highlightthickness=0)
+        self.update_button = Button(image=self.update_image, borderwidth=0, highlightthickness=0,
+                                                    command=lambda: adp.Admin_Process.inventory_action_handle(self, 'update'))
+
         self.update_button.place(x=38, y=440, width=130, height=40)      
 
-        self.remove_button = Button(image=self.remove_image, borderwidth=0, highlightthickness=0)
+        self.remove_button = Button(image=self.remove_image, borderwidth=0, highlightthickness=0,
+                                                        command=lambda: adp.Admin_Process.inventory_clear_fields(self))
+
         self.remove_button.place(x=186, y=440, width=130, height=40)  
 
-        self.checksales_button = Button(image=self.checksales_image, borderwidth=0, highlightthickness=0)
+        self.checksales_button = Button(image=self.checksales_image, borderwidth=0, highlightthickness=0,
+                                                        command=lambda: adp.Admin_Process.button_handle(self, 'sale'))
+
         self.checksales_button.place(x=24, y=90, width=144, height=48)
 
         self.inventory_button = Button(image=self.inventory_image, borderwidth=0, highlightthickness=0)
         self.inventory_button.place(x=190, y=90, width=144, height=48)
 
-        self.hotels_button = Button(image=self.hotels_image, borderwidth=0, highlightthickness=0)
+        self.hotels_button = Button(image=self.hotels_image, borderwidth=0, highlightthickness=0,
+                                                        command=lambda: adp.Admin_Process.button_handle(self, 'hotel'))
+
         self.hotels_button.place(x=358, y=90, width=144, height=48)
 
-        self.users_button = Button(image=self.user_image, borderwidth=0, highlightthickness=0)
+        self.users_button = Button(image=self.user_image, borderwidth=0, highlightthickness=0,
+                                                        command=lambda: adp.Admin_Process.button_handle(self, 'user'))
+
         self.users_button.place(x=524, y=90, width=144, height=48)
 
 
@@ -119,6 +132,26 @@ class Admin_Users:
         self.tree.column("description", width=100)
         self.tree.column("type_room", width=80)
         self.tree.column("price", width=50)
+
+        self.load_data()
+    
+    def load_data(self):
+        for item in self.tree.get_children():
+            self.tree.delete(item)
+
+        # Fetch data from MongoDB
+        api = inven_api.Inventory_Api()
+        inventory_data = list(api.inventory_collection.find())
+
+        for item in inventory_data:
+            self.tree.insert("", "end", values=(
+                item.get("hotel_name", ""),
+                item.get("description", ""),
+                item.get("type_room", ""),
+                str(item.get("price", ""))
+            ))
+
+
     def run(self):
         self.window.mainloop()
 

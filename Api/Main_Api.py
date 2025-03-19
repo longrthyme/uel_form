@@ -30,6 +30,7 @@ class Api:
         self.invoices_collection = self.db['invoices']
         self.hotels_collection = self.db['hotels']
         self.sales = self.db['sales']
+        self.inventory_collection = self.db['inventory_collection']
 
 
     def get_all_warehouse_data(self):

@@ -57,10 +57,14 @@ class Hotel_View:
                                         command=lambda: adp.Admin_Process.hotel_button_handle(self))
         self.addhotel_button.place(x=213, y=417, width=93, height=34)
 
-        self.checksales_button = Button(image=self.checksales_image, borderwidth=0, highlightthickness=0)
+        self.checksales_button = Button(image=self.checksales_image, borderwidth=0, highlightthickness=0,
+                                                        command=lambda: adp.Admin_Process.button_handle(self, 'sale'))
+
         self.checksales_button.place(x=24, y=90, width=144, height=48)
 
-        self.inventory_button = Button(image=self.inventory_image, borderwidth=0, highlightthickness=0)
+        self.inventory_button = Button(image=self.inventory_image, borderwidth=0, highlightthickness=0,
+                                                        command=lambda: adp.Admin_Process.button_handle(self, 'inventory'))
+
         self.inventory_button.place(x=190, y=90, width=144, height=48)
 
         self.hotels_button = Button(image=self.hotels_image, borderwidth=0, highlightthickness=0)

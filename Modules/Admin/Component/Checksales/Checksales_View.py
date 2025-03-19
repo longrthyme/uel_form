@@ -4,6 +4,7 @@ from tkinter import Canvas, PhotoImage, Entry, Button
 from pathlib import Path
 from PIL import Image, ImageTk
 import Api.Sale_Api as sale_api
+import Modules.Admin.Process.Admin_Process as adp
 
 class Admin_Users:
     def __init__(self):
@@ -60,13 +61,19 @@ class Admin_Users:
         self.checksales_button = Button(image=self.checksales_image, borderwidth=0, highlightthickness=0)
         self.checksales_button.place(x=24, y=90, width=144, height=48)
 
-        self.inventory_button = Button(image=self.inventory_image, borderwidth=0, highlightthickness=0)
+        self.inventory_button = Button(image=self.inventory_image, borderwidth=0, highlightthickness=0,
+                                                                            command=lambda: adp.Admin_Process.button_handle(self, 'inventory'))
+
         self.inventory_button.place(x=190, y=90, width=144, height=48)
 
-        self.hotels_button = Button(image=self.hotels_image, borderwidth=0, highlightthickness=0)
+        self.hotels_button = Button(image=self.hotels_image, borderwidth=0, highlightthickness=0,
+                                                                    command=lambda: adp.Admin_Process.button_handle(self, 'hotel'))
+
         self.hotels_button.place(x=358, y=90, width=144, height=48)
 
-        self.users_button = Button(image=self.user_image, borderwidth=0, highlightthickness=0)
+        self.users_button = Button(image=self.user_image, borderwidth=0, highlightthickness=0,
+                                                                command=lambda: adp.Admin_Process.button_handle(self, 'user'))
+
         self.users_button.place(x=524, y=90, width=144, height=48)
 
         self.entry_bg_1 = self.canvas.create_image(209, 181, image=self.textbox_image)

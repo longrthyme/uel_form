@@ -7,6 +7,7 @@ import sys
 # # sys.path.append('c:/DoAn/doancuoiky-nhom1')
 import Api.Hotel_Api as hotel_api
 import Api.User_Api as user_api
+import Api.Inventory_Api as inventory_api
 
 # import Modules.Admin.Landing_View as av
 # import Modules.User.User_Landing_View as uv
@@ -14,6 +15,7 @@ import Api.User_Api as user_api
 import Modules.Admin.Component.Hotels.Hotels_View as hv
 import Modules.Admin.Component.Users.Users_View as uv
 import Modules.Admin.Component.Checksales.Checksales_View as sl
+import Modules.Admin.Component.Inventory.Inventory_View as it
 
 class Admin_Process:
 
@@ -54,7 +56,41 @@ class Admin_Process:
         obj.entry_4.delete(0, "end")
         obj.entry_5.delete(0, "end")
         
-    
+    @staticmethod
+    def inventory_clear_fields(obj):
+        obj.entry_1.delete(0, "end")
+        obj.entry_2.delete(0, "end")
+        obj.entry_3.delete(0, "end")
+        obj.entry_4.delete(0, "end")
+        obj.entry_5.delete(0, "end")
+        obj.entry_6.delete(0, "end")
+
+    @staticmethod
+    def inventory_action_handle(obj, type):
+        hotel_name = obj.entry_1.get()  # Get Hotel Name
+        description = obj.entry_2.get()  # Get Description
+        type_room = obj.entry_3.get()  # Get Type Room
+        price = float(obj.entry_4.get())  # Convert price to float
+        stock = int(obj.entry_5.get())  # Convert stock to integer
+
+        inventory_data = {
+            "hotel_name": hotel_name,
+            "description": description,
+            "type_room": type_room,
+            "price": price,
+            "stock": stock
+        }
+
+        if type == "update":
+            # Update only price and stock based on hotel_name and type_room
+            updated_fields = {"price": price, "stock": stock,  "description": description,
+            "type_room": type_room}
+            api = inventory_api.Inventory_Api()
+            api.update_inventory(hotel_name, type_room, updated_fields)
+            print(f"Inventory updated for {hotel_name} - {type_room}")
+
+        else:
+            messagebox.showerror("Error", "Invalid action type!")
     @staticmethod
     def user_action_handle(obj, type):
         # type: update, delete, create new 
@@ -94,8 +130,10 @@ class Admin_Process:
             app = uv.Admin_Users()
         elif view_type == "sale":
             app = sl.Admin_Users()
+        elif view_type == "inventory":
+            app = it.Admin_Users()
         else:
-            print("Error: Invalid view type")
+            messagebox.showerror("Error", "Invalid view type")
             return  # Exit function if invalid type
 
         app.window.mainloop()

@@ -51,8 +51,10 @@ class Admin_View:
         #  self.login_button = Button(image=self.login_image_1, borderwidth=0, highlightthickness=0,
         #                        command=lambda: lgp.Login_Process.confirm_button_handle(self))
 
-        self.inventory_button = Button(image=self.inventory_image, borderwidth=0, highlightthickness=0)
+        self.inventory_button = Button(image=self.inventory_image, borderwidth=0, highlightthickness=0,
                             #    command=lambda: ap.Admin_Process.inventory_button_handle(self))
+                                                        command=lambda: adp.Admin_Process.button_handle(self, 'inventory'))
+
         self.inventory_button.place(x=230, y=283, width=146, height=48)
 
         self.sales_button = Button(image=self.sales_image, borderwidth=0, highlightthickness=0,

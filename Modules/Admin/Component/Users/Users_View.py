@@ -65,10 +65,14 @@ class Admin_Users:
 
         self.createnew_button.place(x=204, y=360, width=113, height=24)  
 
-        self.checksales_button = Button(image=self.checksales_image, borderwidth=0, highlightthickness=0)
+        self.checksales_button = Button(image=self.checksales_image, borderwidth=0, highlightthickness=0,
+                                                        command=lambda: adp.Admin_Process.button_handle(self, 'sale'))
+
         self.checksales_button.place(x=24, y=90, width=144, height=48)
 
-        self.inventory_button = Button(image=self.inventory_image, borderwidth=0, highlightthickness=0)
+        self.inventory_button = Button(image=self.inventory_image, borderwidth=0, highlightthickness=0,
+                                                        command=lambda: adp.Admin_Process.button_handle(self, 'inventory'))
+
         self.inventory_button.place(x=190, y=90, width=144, height=48)
 
         self.hotels_button = Button(image=self.hotels_image, borderwidth=0, highlightthickness=0,
@@ -76,7 +80,9 @@ class Admin_Users:
 
         self.hotels_button.place(x=358, y=90, width=144, height=48)
 
-        self.users_button = Button(image=self.user_image, borderwidth=0, highlightthickness=0)
+        self.users_button = Button(image=self.user_image, borderwidth=0, highlightthickness=0,
+                                                        command=lambda: adp.Admin_Process.button_handle(self, 'user'))
+
         self.users_button.place(x=524, y=90, width=144, height=48)
 
         self.entry_bg_1 = self.canvas.create_image(235, 223, image=self.textbox_image)
