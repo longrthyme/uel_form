@@ -4,8 +4,12 @@ from pathlib import Path
 from tkinter import ttk
 
 class Hotel_View:
-    def __init__(self):
+    def __init__(self, rooms_data):
         self.window = tk.Tk()
+        self.rooms_data = rooms_data
+
+        print("rooms data: ", self.rooms_data)
+        
         # get screen width and height
         self.screen_width = self.window.winfo_screenwidth()
         self.screen_height = self.window.winfo_screenheight()
@@ -22,11 +26,13 @@ class Hotel_View:
         self.canvas = Canvas(self.window, bg="#FFFFFF", height=500, width=700, bd=0, highlightthickness=0, relief="ridge")
         self.canvas.place(x=0, y=0)
 
-        assets_path = Path(r"C:\DoAn\Image\User\Room2")
+        # assets_path = Path(r"C:\DoAn\Image\User\Room2")
+
+        assets_path = Path(r"/home/long/Downloads/doancuoiky-nhom1/Image/User/Room2")
 
         self.background_img = PhotoImage(file=assets_path / "Background.png")
         self.account_image = PhotoImage(file=assets_path / "Button_Account.png")
-        self.homepage_image = PhotoImage(file=assets_path / "Button_HomePage.png")
+        self.homepage_image = PhotoImage(file=assets_path / "Button_Homepage.png")
         self.logout_image = PhotoImage(file=assets_path / "Button_Logout.png")
         self.update_image = PhotoImage(file=assets_path / "Button_Update.png")
 
@@ -71,6 +77,12 @@ class Hotel_View:
 
         # Đặt kích thước bảng
         self.tree.place(x=0, y=0, width=642, height=230)
+        self.populate_rooms()
+    
+    def populate_rooms(self):
+        for room in self.rooms_data:
+            self.tree.insert("", "end", values=(room.get("room_id", "N/A"), room.get("price", "N/A"), room.get("description", "No Description")))
+
     def run(self):
         self.window.mainloop()
 # Chạy ứng dụng

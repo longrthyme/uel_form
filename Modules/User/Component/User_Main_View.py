@@ -4,6 +4,7 @@ from pathlib import Path
 from tkinter import *
 from tkinter import Spinbox
 # from PIL import Image, ImageTk
+import Modules.User.Process.User_Process as up
 class HotelBookingApp:
     def __init__(self):
         self.window = tk.Tk()
@@ -23,7 +24,9 @@ class HotelBookingApp:
         self.canvas = Canvas(self.window, bg="#FFFFFF", height=500, width=700, bd=0, highlightthickness=0, relief="ridge")
         self.canvas.place(x=0, y=0)
 
-        assets_path = Path(r"C:\DoAn\doancuoiky-nhom1\Image\User\Booking_Hotels")
+        # assets_path = Path(r"C:\DoAn\doancuoiky-nhom1\Image\User\Booking_Hotels")
+
+        assets_path = Path(r"/home/long/Downloads/doancuoiky-nhom1/Image/User/Booking_Hotels")
 
         self.background_img = PhotoImage(file=assets_path / "Background.png")
         self.account_image = PhotoImage(file=assets_path / "Button_Account.png")
@@ -40,7 +43,9 @@ class HotelBookingApp:
                             #    command=lambda: signup_process.Signup_Process.login_button_handle(self))
         self.account_button.place(x=76, y=16, width=39, height=39)
 
-        self.check_button = Button(image=self.check_image, borderwidth=0, highlightthickness=0,relief="flat")
+        self.check_button = Button(image=self.check_image, borderwidth=0, highlightthickness=0,relief="flat",
+                                            command=lambda: up.User_Process.button_handle(self, 'filter'))
+
         self.check_button.place(x=536, y=437, width=130.4, height=32.8)
 
         self.homepage_button = Button(image=self.homepage_image,borderwidth=0,highlightthickness=0)
@@ -89,20 +94,20 @@ class HotelBookingApp:
 
 
                # Tạo Combobox 1
-        self.combobox1 = ttk.Combobox( values=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+        self.combobox4 = ttk.Combobox( values=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
 , state="readonly",font=("Inter",10))
-        self.combobox1.set("Date")  # Giá trị mặc định
-        self.combobox1.place(x=400, y=247, width=60,height=47)  # Vị trí của Combobox 1
+        self.combobox4.set("Date")  # Giá trị mặc định
+        self.combobox4.place(x=400, y=247, width=60,height=47)  # Vị trí của Combobox 1
 
         # Tạo Combobox 2
-        self.combobox2 = ttk.Combobox( values=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],font=("Inter",10),state="readonly")
-        self.combobox2.set("Month")  # Giá trị mặc định
-        self.combobox2.place(x=460, y=247, width=60,height=47)  # Vị trí của Combobox 2
+        self.combobox5 = ttk.Combobox( values=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],font=("Inter",10),state="readonly")
+        self.combobox5.set("Month")  # Giá trị mặc định
+        self.combobox5.place(x=460, y=247, width=60,height=47)  # Vị trí của Combobox 2
 
         # Tạo Combobox 3
-        self.combobox3 = ttk.Combobox( values=[2025,2026,2027,2028], state="readonly",font=("Inter",10))
-        self.combobox3.set("Year")  # Giá trị mặc định
-        self.combobox3.place(x=520, y=247, width=80,height=47)  # Vị trí của Combobox 3
+        self.combobox6 = ttk.Combobox( values=[2025,2026,2027,2028], state="readonly",font=("Inter",10))
+        self.combobox6.set("Year")  # Giá trị mặc định
+        self.combobox6.place(x=520, y=247, width=80,height=47)  # Vị trí của Combobox 3
 
         #Tạo combobox cho "Guest & Rooms"
         # self.adults_var = tk.StringVar(value="Adults")
