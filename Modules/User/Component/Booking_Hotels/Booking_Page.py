@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import Canvas, PhotoImage, Button
 from pathlib import Path
 from tkinter import ttk
+import Modules.User.Process.User_Process as up
 
 class Hotel_View:
     def __init__(self, rooms_data):
@@ -43,7 +44,8 @@ class Hotel_View:
                             #    command=lambda: signup_process.Signup_Process.login_button_handle(self))
         self.account_button.place(x=76, y=16, width=39, height=39)
 
-        self.update_button = Button(image=self.update_image, borderwidth=0, highlightthickness=0,relief="flat")
+        self.update_button = Button(image=self.update_image, borderwidth=0, highlightthickness=0,relief="flat",
+                                    command=lambda: up.User_Process.button_handle(self, 'overview'))
         self.update_button.place(x=570, y=457, width=97.8, height=24.6)
 
         self.homepage_button = Button(image=self.homepage_image,borderwidth=0,highlightthickness=0)
@@ -78,6 +80,26 @@ class Hotel_View:
         # Đặt kích thước bảng
         self.tree.place(x=0, y=0, width=642, height=230)
         self.populate_rooms()
+
+        self.tree.bind("<ButtonRelease-1>", self.handle_selected_row)
+    
+    def handle_selected_row(self, event):
+        """Retrieve and handle the data from the selected row."""
+        # Get the selected item id
+        selected_item = self.tree.focus()
+        if not selected_item:
+            return
+        
+        # Retrieve the row's values
+        row_values = self.tree.item(selected_item, 'values')
+        print("Selected row values:", row_values)
+        
+        # Save the selected room data into a self variable for later use
+        self.selected_room = {
+            "room_id": row_values[0],
+            "price": row_values[1],
+            "description": row_values[2]
+        }
     
     def populate_rooms(self):
         for room in self.rooms_data:

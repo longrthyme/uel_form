@@ -5,9 +5,10 @@ from tkinter import *
 import sys
 import Api.Hotel_Api as hotel_api
 import Modules.User.Component.Booking_Hotels.Booking_Page as bp
+import Modules.User.Component.Booking_Hotels.Invoice as invoice
 import unicodedata
 import re
-
+from Modules.User.global_vars import filter_room_book_data
 class User_Process:
 
     # @staticmethod
@@ -43,6 +44,13 @@ class User_Process:
             print(f"City: {city}")
             print(f"Check-in Date: {day1}-{month1}-{year1}")
             print(f"Check-out Date: {day2}-{month2}-{year2}")
+
+            filter_room_book_data["check_in_day"] = day1
+            filter_room_book_data["check_in_month"] = month1
+            filter_room_book_data["check_in_year"] = year1
+            filter_room_book_data["check_out_day"] = day2
+            filter_room_book_data["check_out_month"] = month2
+            filter_room_book_data["check_out_year"] = year2
 
             # cities = ["Hồ Chí Minh", "ho chi minh", "Hồ chí minh", " ho chi minh ", " hồ chí minh "]
 
@@ -102,3 +110,11 @@ class User_Process:
             self.window.destroy()
             print("rooms data 1: ", rooms_data)
             app = bp.Hotel_View(rooms_data)
+        elif view_type == "overview":
+            self.window.destroy()
+            if(self.selected_room):
+                print("selected room: ", self.selected_room)
+                room_price = self.selected_room
+
+            app = invoice.Invoice_View(room_price)
+        app.window.mainloop()

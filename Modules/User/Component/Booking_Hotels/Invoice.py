@@ -5,14 +5,17 @@ import tkinter as tk
 from tkinter import Canvas, PhotoImage, Entry, Button
 from pathlib import Path
 from tkinter import ttk
+from Modules.User.global_vars import filter_room_book_data
 
 
 class Invoice_View:
-    def __init__(self):
+    def __init__(self, room_price):
         self.window = tk.Tk()
         # get screen width and height
         self.screen_width = self.window.winfo_screenwidth()
         self.screen_height = self.window.winfo_screenheight()
+
+        self.room_price = room_price
 
         # set window width and height
         self.window_width = 693
@@ -27,7 +30,9 @@ class Invoice_View:
         self.canvas.place(x=0, y=0)
 
 
-        assets_path = Path(r"C:\DoAn\Image\User\Invoice")
+        # assets_path = Path(r"C:\DoAn\Image\User\Invoice")
+        assets_path = Path("/home/long/Downloads/doancuoiky-nhom1/Image/User/Invoice")
+
 
         self.background_img = PhotoImage(file=assets_path / "Background.png")
         self.signout_image = PhotoImage(file=assets_path / "Button_Signout.png")
@@ -62,7 +67,10 @@ class Invoice_View:
         self.quit_button = Button(image=self.quit_image, borderwidth=0, highlightthickness=0)
         self.quit_button.place(x=551, y=86, width=91.22, height=34)
 
-        self.addtocart_button = Button(image=self.addtocart_image, borderwidth=0, highlightthickness=0)
+        self.addtocart_button = Button(image=self.addtocart_image, borderwidth=0, highlightthickness=0,
+                                            command=lambda: self.add_to_table())
+
+        
         self.addtocart_button.place(x=435, y=385, width=70.7, height=19.26)
 
         self.remove_button = Button(image=self.remove_image, borderwidth=0, highlightthickness=0)
@@ -87,17 +95,18 @@ class Invoice_View:
         self.entry_4 = Entry(bd=0, bg="#E1F2CE", fg="#000716", highlightthickness=0)
         self.entry_4.place(x=450, y=263, width=140, height=18.42)
 
+        # note 
         self.entry_bg_5 = self.canvas.create_image(560, 342, image=self.textbox2_image)
         self.entry_5 = Entry(bd=0, bg="#E1F2CE", fg="#000716", highlightthickness=0)
         self.entry_5.place(x=522, y=335, width=75, height=16.26)
 
         self.entry_bg_5 = self.canvas.create_image(560, 369, image=self.textbox2_image)
-        self.entry_5 = Entry(bd=0, bg="#E1F2CE", fg="#000716", highlightthickness=0)
-        self.entry_5.place(x=522, y=362, width=75, height=16.26)
+        self.entry_6 = Entry(bd=0, bg="#E1F2CE", fg="#000716", highlightthickness=0)
+        self.entry_6.place(x=522, y=362, width=75, height=16.26)
 
         self.entry_bg_5 = self.canvas.create_image(520, 423, image=self.textbox1_image)
-        self.entry_5 = Entry(bd=0, bg="#E1F2CE", fg="#000716", highlightthickness=0)
-        self.entry_5.place(x=450, y=415, width=130, height=16.26)
+        self.entry_7 = Entry(bd=0, bg="#E1F2CE", fg="#000716", highlightthickness=0)
+        self.entry_7.place(x=450, y=415, width=130, height=16.26)
 
 
                 # Tạo Frame chứa bảng
@@ -125,8 +134,76 @@ class Invoice_View:
 
         self.window.resizable(0, 0)
 
+        self.load_data_init()
+
+        self.tree.bind("<ButtonRelease-1>", self.on_tree_select)
+
+    def on_tree_select(self, event):
+        """Handle row selection and load values into entries."""
+        # Get the currently selected item in the treeview
+        selected_item = self.tree.focus()
+        if not selected_item:
+            return
+
+        # Retrieve the row's values (this returns a tuple)
+        row_values = self.tree.item(selected_item, 'values')
+        print("Selected row values:", row_values)
+
+        # Set the values in the Entry widgets
+        # Assuming the order of values is: name, checkin, checkout, quantity, price
+        self.entry_1.delete(0, tk.END)
+        self.entry_1.insert(0, row_values[0])
+        
+        self.entry_2.delete(0, tk.END)
+        self.entry_2.insert(0, row_values[1])
+        
+        self.entry_3.delete(0, tk.END)
+        self.entry_3.insert(0, row_values[2])
+        
+        self.entry_4.delete(0, tk.END)
+        self.entry_4.insert(0, row_values[4])
+        
+        # self.entry_5.delete(0, tk.END)
+        # self.entry_5.insert(0, row_values[4])
+    def add_to_table(self):
+        """
+        Populate the treeview with booking data from the Entry widgets.
+        """
+        # Clear existing rows in the treeview
+        for item in self.tree.get_children():
+            self.tree.delete(item)
+
+        # Retrieve values from the Entry widgets
+        name = self.entry_1.get()
+        checkout = self.entry_2.get()
+        checkin = self.entry_3.get()
+        quantity = 1
+        price = self.entry_4.get()
+
+        # Insert the new row into the treeview
+        self.tree.insert("", "end", values=(name, checkin, checkout, quantity, price))
+
+        print("Treeview populated with booking data.")
+
+    def load_data_init(self):
+        print("check_in_day:", filter_room_book_data.get('check_in_day', '10'))
+        print("check_in_month:", filter_room_book_data.get('check_in_month', '03'))
+        print("check_in_year:", filter_room_book_data.get('check_in_year', '2025'))
 
 
+        default_check_in = f"{filter_room_book_data.get('check_in_day', '10')}-{filter_room_book_data.get('check_in_month', '03')}-{filter_room_book_data.get('check_in_year', '2025')}"
+
+        # Merge check-out date values from global vars
+        default_check_out = f"{filter_room_book_data.get('check_out_day', '15')}-{filter_room_book_data.get('check_out_month', '03')}-{filter_room_book_data.get('check_out_year', '2025')}"
+
+        self.entry_2.insert(0, default_check_in)  # Inserts "15-03-2025" as default text
+        self.entry_3.insert(0, default_check_out)  # Inserts "15-03-2025" as default textlo
+
+        self.price = self.room_price.get('price', '')
+
+        # Insert the price into the Entry widget
+        self.entry_4.insert(0, self.price)
+        self.entry_7.insert(0, self.price)  # Inserts "15-03-2025" as default textlo
     def run(self):
         self.window.mainloop()
 
