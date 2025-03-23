@@ -4,9 +4,13 @@ from tkinter import *
 
 import sys
 import Api.Hotel_Api as hotel_api
+import Api.Invoice_Api as invoice_api
 import Modules.User.Component.Booking_Hotels.Booking_Page as bp
 import Modules.User.Component.Booking_Hotels.Invoice as invoice
+import Modules.User.Component.Booking_Hotels.End as end
+
 import unicodedata
+
 import re
 from Modules.User.global_vars import filter_room_book_data
 class User_Process:
@@ -40,10 +44,23 @@ class User_Process:
             month2 = self.combobox5.get()
             year2 = self.combobox6.get()
             
+             # Get values from Spinbox widgets
+            adults = self.adult_spinbox.get()
+            children = self.children_spinbox.get()
+            single_room = self.single_spinbox.get()
+            couple_room = self.couple_spinbox.get()
+            family_room = self.family_spinbox.get()
+
             # In ra để kiểm tra
             print(f"City: {city}")
             print(f"Check-in Date: {day1}-{month1}-{year1}")
             print(f"Check-out Date: {day2}-{month2}-{year2}")
+            print(f"Adults: {adults}")
+            print(f"Children: {children}")
+            print(f"Single Room: {single_room}")
+            print(f"Couple Room: {couple_room}")
+            print(f"Family Room: {family_room}")
+            
 
             filter_room_book_data["check_in_day"] = day1
             filter_room_book_data["check_in_month"] = month1
@@ -51,6 +68,12 @@ class User_Process:
             filter_room_book_data["check_out_day"] = day2
             filter_room_book_data["check_out_month"] = month2
             filter_room_book_data["check_out_year"] = year2
+
+            filter_room_book_data["adults"] = self.adult_spinbox.get() if self.adult_spinbox.get() else "0"
+            filter_room_book_data["children"] = self.children_spinbox.get() if self.children_spinbox.get() else "0"
+            filter_room_book_data["single_room"] = self.single_spinbox.get() if self.single_spinbox.get() else "0"
+            filter_room_book_data["couple_room"] = self.couple_spinbox.get() if self.couple_spinbox.get() else "0"
+            filter_room_book_data["family_room"] = self.family_spinbox.get() if self.family_spinbox.get() else "0"
 
             # cities = ["Hồ Chí Minh", "ho chi minh", "Hồ chí minh", " ho chi minh ", " hồ chí minh "]
 
@@ -117,4 +140,38 @@ class User_Process:
                 room_price = self.selected_room
 
             app = invoice.Invoice_View(room_price)
+        elif view_type == "end":
+            
+            
+            api = invoice_api.Invoice_Api()
+
+            print(f"log usser", filter_room_book_data["loged_user"])
+
+            new_invoice = {
+                "room_id": filter_room_book_data.get("room_id", "N/A"),
+                "check_in_day": self.entry_2.get(),
+                "check_out_day": self.entry_3.get(),
+                "note": self.entry_5.get(),
+                "price": self.entry_4.get(),
+                "total":self.entry_7.get(),
+                "customer_name": filter_room_book_data.get("loged_user", "N/A"),
+                "adults": filter_room_book_data.get("adults", "0"),
+                "children": filter_room_book_data.get("children", "0"),
+                "single_room": filter_room_book_data.get("single_room", "0"),
+                "couple_room": filter_room_book_data.get("couple_room", "0"),
+                "family_room": filter_room_book_data.get("family_room", "0"),
+
+            }
+
+            result =  api.add_invoice(new_invoice)
+
+            print(f"Result invoice", result)
+
+            invoice_detail = api.get_invoice(result.inserted_id)
+
+            print(f"Result invoice detail", invoice_detail)
+
+            self.window.destroy()
+
+            app = end.Hotel_View(invoice_detail)
         app.window.mainloop()

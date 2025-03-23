@@ -3,6 +3,7 @@ from tkinter import Canvas, PhotoImage, Button
 from pathlib import Path
 from tkinter import ttk
 import Modules.User.Process.User_Process as up
+from Modules.User.global_vars import filter_room_book_data
 
 class Hotel_View:
     def __init__(self, rooms_data):
@@ -100,7 +101,9 @@ class Hotel_View:
             "price": row_values[1],
             "description": row_values[2]
         }
-    
+
+        filter_room_book_data["room_id"] = row_values[0]
+
     def populate_rooms(self):
         for room in self.rooms_data:
             self.tree.insert("", "end", values=(room.get("room_id", "N/A"), room.get("price", "N/A"), room.get("description", "No Description")))

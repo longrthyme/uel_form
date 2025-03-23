@@ -6,6 +6,7 @@ from tkinter import Canvas, PhotoImage, Entry, Button
 from pathlib import Path
 from tkinter import ttk
 from Modules.User.global_vars import filter_room_book_data
+import Modules.User.Process.User_Process as up
 
 
 class Invoice_View:
@@ -76,7 +77,8 @@ class Invoice_View:
         self.remove_button = Button(image=self.remove_image, borderwidth=0, highlightthickness=0)
         self.remove_button.place(x=520, y=385, width=70.7, height=19.26)
 
-        self.process_button = Button(image=self.process_image, borderwidth=0, highlightthickness=0)
+        self.process_button = Button(image=self.process_image, borderwidth=0, highlightthickness=0,
+                command=lambda: up.User_Process.button_handle(self, 'end'))
         self.process_button.place(x=350, y=335, width=75.75, height=70.61)      
 
         self.entry_bg_1 = self.canvas.create_image(520, 185, image=self.textbox1_image)

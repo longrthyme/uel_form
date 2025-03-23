@@ -1,4 +1,5 @@
 import Api.Main_Api as main_api
+from Modules.User.global_vars import filter_room_book_data
 
 
 class Login_Api(main_api.Api):
@@ -16,4 +17,6 @@ class Login_Api(main_api.Api):
             return -2  # error 2: user not found
         if user["Password"] != password:
             return -3  # error 3: password is wrong
+        print(f"Logged user", user.get("Username"))
+        filter_room_book_data["loged_user"] = user.get("Username")
         return user["Roles"]

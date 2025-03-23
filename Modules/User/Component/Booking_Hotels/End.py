@@ -7,8 +7,10 @@ from pathlib import Path
 from tkinter import ttk
 
 class Hotel_View:
-    def __init__(self):
+    def __init__(self, invoice_detail):
         self.window = tk.Tk()
+        self.invoice_detail = invoice_detail
+        print("invoice detail: ", self.invoice_detail)
         # get screen width and height
         self.screen_width = self.window.winfo_screenwidth()
         self.screen_height = self.window.winfo_screenheight()
@@ -26,7 +28,9 @@ class Hotel_View:
         self.canvas.place(x=0, y=0)
 
 
-        assets_path = Path(r"C:\DoAn\Image\User\End")
+        # assets_path = Path(r"C:\DoAn\Image\User\End")
+        assets_path = Path("/home/long/Downloads/doancuoiky-nhom1/Image/User/End")
+
 
         self.background_img = PhotoImage(file=assets_path / "Background.png")
         self.logout_image = PhotoImage(file=assets_path / "Button_Logout.png")
@@ -91,7 +95,32 @@ class Hotel_View:
 
         self.window.resizable(0, 0)
 
+        self.load_invoice_detail()
 
+    def load_invoice_detail(self):
+        """Load invoice details into the Treeview table"""
+        self.table.delete(*self.table.get_children())  # Clear existing entries in the table
+
+        invoice = self.invoice_detail  # Use the stored invoice detail
+
+        if invoice:  # Ensure there's data to insert
+            self.entry_1.delete(0, tk.END)
+            self.entry_2.delete(0, tk.END)
+            self.entry_3.delete(0, tk.END)
+
+            # Set new values
+            self.entry_1.insert(0, invoice.get("customer_name", ""))
+            self.entry_2.insert(0, str(invoice.get("_id", "")))  # Convert ObjectId to string
+            self.entry_3.insert(0, invoice.get("total", ""))
+            
+            self.table.insert("", "end", values=(
+                invoice.get("check_in_day", "N/A"),
+                invoice.get("check_out_day", "N/A"),
+                invoice.get("note", "N/A"),
+                invoice.get("price", "N/A")
+            ))
+
+        print("Invoice detail loaded successfully.")
 
     def run(self):
         self.window.mainloop()
