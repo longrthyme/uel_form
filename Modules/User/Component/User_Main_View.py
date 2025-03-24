@@ -51,7 +51,9 @@ class HotelBookingApp:
         self.homepage_button = Button(image=self.homepage_image,borderwidth=0,highlightthickness=0)
         self.homepage_button.place(x=37.3,y=70.1,width=130.4,height=32.8)
 
-        self.logout_button = Button(image=self.logout_image,borderwidth=0,highlightthickness=0)
+        self.logout_button = Button(image=self.logout_image,borderwidth=0,highlightthickness=0,
+                command=lambda: up.User_Process.button_handle(self, 'logout'))
+
         self.logout_button.place(x=563,y=26,width=103.28,height=32.8)
 
         self.entry_bg_1 = self.canvas.create_image(180, 186, image=self.entry_image_1)

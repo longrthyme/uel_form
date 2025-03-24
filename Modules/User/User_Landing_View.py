@@ -7,6 +7,7 @@ from pathlib import Path
 import Modules.Login.Login_Process as lgp
 import Modules.User.User_Landing_Process as ap
 from Modules.User.Component.User_Main_View import HotelBookingApp
+import Modules.User.Process.User_Process as up
 
 class User_Landing_View :
     def __init__(self):
@@ -38,7 +39,8 @@ class User_Landing_View :
         self.background = self.canvas.create_image(342.0, 246.0, image=self.background_img)
 
         self.logout_button = Button(image=self.logout_image, borderwidth=0, highlightthickness=0,
-                               command=lambda: ap.User_Landing_process.log_out_button_handle(self))
+                                       command=lambda: up.User_Process.button_handle(self, 'logout'))
+
         self.logout_button.place(x=462, y=85, width=130, height=40)
 
         self.bookingnow_button = Button(image=self.booking_image, borderwidth=0, highlightthickness=0,command=lambda:self.open_booking_page())

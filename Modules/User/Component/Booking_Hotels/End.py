@@ -5,6 +5,8 @@ import tkinter as tk
 from tkinter import Canvas, PhotoImage, Entry, Button
 from pathlib import Path
 from tkinter import ttk
+import Modules.User.Process.User_Process as up
+
 
 class Hotel_View:
     def __init__(self, invoice_detail):
@@ -39,7 +41,8 @@ class Hotel_View:
         self.printinvoice_image = PhotoImage(file=assets_path / "Button_Printinvoice.png")
         self.background = self.canvas.create_image(342.0, 246.0, image=self.background_img)
 
-        self.logout_button = Button(image=self.logout_image, borderwidth=0, highlightthickness=0)
+        self.logout_button = Button(image=self.logout_image, borderwidth=0, highlightthickness=0,
+        command=lambda: up.User_Process.button_handle(self, 'logout'))
                                     # command=lambda: up.User_Landing_process.log_out_button_handle(self))
         self.logout_button.place(x=544, y=26, width=130, height=40)
 
@@ -51,7 +54,8 @@ class Hotel_View:
                                         # command=lambda: up.User_Landing_process.buytickets_button_handle(self))
         self.addhotel_button.place(x=96, y=80, width=239, height=48)
 
-        self.checksales_button = Button(image=self.quit_image, borderwidth=0, highlightthickness=0)
+        self.checksales_button = Button(image=self.quit_image, borderwidth=0, highlightthickness=0,
+        command=lambda: up.User_Process.button_handle(self, 'quit'))
         self.checksales_button.place(x=362, y=80, width=239, height=48)
 
 

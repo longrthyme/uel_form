@@ -8,9 +8,13 @@ import Api.Invoice_Api as invoice_api
 import Modules.User.Component.Booking_Hotels.Booking_Page as bp
 import Modules.User.Component.Booking_Hotels.Invoice as invoice
 import Modules.User.Component.Booking_Hotels.End as end
+import Modules.User.User_Landing_View as usmv
 
+import Modules.Login.Login_View as lv
+
+from datetime import datetime
 import unicodedata
-
+import uuid
 import re
 from Modules.User.global_vars import filter_room_book_data
 class User_Process:
@@ -126,6 +130,7 @@ class User_Process:
                 print(f"Hotel: {hotel['hotel_name']}, Address: {hotel['address']}")
                 if "rooms" in hotel and hotel["rooms"]:
                     for room in hotel["rooms"]:
+                        room["hotel_name"] = hotel["hotel_name"]
                         print(f"  Room: {room['room_id']}, Price: {room['price']}")
                         rooms_data.append(room)
 
@@ -148,12 +153,16 @@ class User_Process:
             print(f"log usser", filter_room_book_data["loged_user"])
 
             new_invoice = {
+                "invoice_id": f"INV-{str(uuid.uuid4())}",
                 "room_id": filter_room_book_data.get("room_id", "N/A"),
+                "invoice_date": datetime.now().strftime("%Y-%m-%d"),
                 "check_in_day": self.entry_2.get(),
                 "check_out_day": self.entry_3.get(),
                 "note": self.entry_5.get(),
                 "price": self.entry_4.get(),
                 "total":self.entry_7.get(),
+                "hotel_name": filter_room_book_data.get("hotel_name", "Arena"),
+                "quantity": 1,
                 "customer_name": filter_room_book_data.get("loged_user", "N/A"),
                 "adults": filter_room_book_data.get("adults", "0"),
                 "children": filter_room_book_data.get("children", "0"),
@@ -174,4 +183,10 @@ class User_Process:
             self.window.destroy()
 
             app = end.Hotel_View(invoice_detail)
+        elif view_type == "logout":
+            self.window.destroy()
+            app = lv.Login_View()
+        elif view_type == "quit":
+            self.window.destroy()
+            app = usmv.User_Landing_View()
         app.window.mainloop()

@@ -49,10 +49,12 @@ class Hotel_View:
                                     command=lambda: up.User_Process.button_handle(self, 'overview'))
         self.update_button.place(x=570, y=457, width=97.8, height=24.6)
 
-        self.homepage_button = Button(image=self.homepage_image,borderwidth=0,highlightthickness=0)
+        self.homepage_button = Button(image=self.homepage_image,borderwidth=0,highlightthickness=0,
+        command=lambda: up.User_Process.button_handle(self, 'quit'))
         self.homepage_button.place(x=37.3,y=70.1,width=130.4,height=32.8)
 
-        self.logout_button = Button(image=self.logout_image,borderwidth=0,highlightthickness=0)
+        self.logout_button = Button(image=self.logout_image,borderwidth=0,highlightthickness=0,
+        command=lambda: up.User_Process.button_handle(self, 'logout'))
         self.logout_button.place(x=563,y=26,width=103.28,height=32.8)
 
 
@@ -66,17 +68,20 @@ class Hotel_View:
         self.table_frame.place(x=25, y=210)
 
         # Tạo Treeview cho bảng
-        self.tree = ttk.Treeview(self.table_frame, columns=("Room Number", "Price", "Description"), show="headings")
+        self.tree = ttk.Treeview(self.table_frame, columns=("Room Number", "Price", "Description","Hidden Data"), show="headings")
 
         # Đặt tiêu đề các cột
         self.tree.heading("Room Number", text="Room Number")
         self.tree.heading("Price", text="Price")
         self.tree.heading("Description", text="Description")
+        
 
         # Đặt chiều rộng cho các cột
         self.tree.column("Room Number", width=100, anchor="center")
         self.tree.column("Price", width=100, anchor="center")
         self.tree.column("Description", width=442, anchor="w")
+
+        self.tree.column("Hidden Data", width=0, stretch=False)
 
         # Đặt kích thước bảng
         self.tree.place(x=0, y=0, width=642, height=230)
@@ -99,14 +104,16 @@ class Hotel_View:
         self.selected_room = {
             "room_id": row_values[0],
             "price": row_values[1],
-            "description": row_values[2]
+            "description": row_values[2],
+            "hotel_name": row_values[3]
         }
 
         filter_room_book_data["room_id"] = row_values[0]
+        filter_room_book_data["hotel_name"] = row_values[3]
 
     def populate_rooms(self):
         for room in self.rooms_data:
-            self.tree.insert("", "end", values=(room.get("room_id", "N/A"), room.get("price", "N/A"), room.get("description", "No Description")))
+            self.tree.insert("", "end", values=(room.get("room_id", "N/A"), room.get("price", "N/A"), room.get("description", "No Description"), room.get("hotel_name", "Arena")))
 
     def run(self):
         self.window.mainloop()

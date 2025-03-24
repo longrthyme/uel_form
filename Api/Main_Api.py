@@ -29,7 +29,7 @@ class Api:
         self.warehouse_collection = self.db['warehouse']
         self.invoices_collection = self.db['invoices']
         self.hotels_collection = self.db['hotels']
-        self.sales = self.db['sales']
+        self.sales = self.db['invoice_book']
         self.inventory_collection = self.db['inventory_collection']
         self.invoices_booking = self.db['invoice_book']
 

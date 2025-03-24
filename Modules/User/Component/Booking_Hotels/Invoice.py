@@ -62,10 +62,12 @@ class Invoice_View:
                                         # command=lambda: up.User_Landing_process.buytickets_button_handle(self))
         self.invoice_button.place(x=223, y=86, width=93, height=34)
 
-        self.signout_button = Button(image=self.signout_image, borderwidth=0, highlightthickness=0)
+        self.signout_button = Button(image=self.signout_image, borderwidth=0, highlightthickness=0,
+        command=lambda: up.User_Process.button_handle(self, 'logout'))
         self.signout_button.place(x=387, y=86, width=93, height=34)
 
-        self.quit_button = Button(image=self.quit_image, borderwidth=0, highlightthickness=0)
+        self.quit_button = Button(image=self.quit_image, borderwidth=0, highlightthickness=0,
+        command=lambda: up.User_Process.button_handle(self, 'quit'))
         self.quit_button.place(x=551, y=86, width=91.22, height=34)
 
         self.addtocart_button = Button(image=self.addtocart_image, borderwidth=0, highlightthickness=0,
@@ -102,9 +104,9 @@ class Invoice_View:
         self.entry_5 = Entry(bd=0, bg="#E1F2CE", fg="#000716", highlightthickness=0)
         self.entry_5.place(x=522, y=335, width=75, height=16.26)
 
-        self.entry_bg_5 = self.canvas.create_image(560, 369, image=self.textbox2_image)
-        self.entry_6 = Entry(bd=0, bg="#E1F2CE", fg="#000716", highlightthickness=0)
-        self.entry_6.place(x=522, y=362, width=75, height=16.26)
+        # self.entry_bg_5 = self.canvas.create_image(560, 369, image=self.textbox2_image)
+        # self.entry_6 = Entry(bd=0, bg="#E1F2CE", fg="#000716", highlightthickness=0)
+        # self.entry_6.place(x=522, y=362, width=75, height=16.26)
 
         self.entry_bg_5 = self.canvas.create_image(520, 423, image=self.textbox1_image)
         self.entry_7 = Entry(bd=0, bg="#E1F2CE", fg="#000716", highlightthickness=0)

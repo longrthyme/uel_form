@@ -88,15 +88,15 @@ class Admin_Users:
         self.table_frame.place(x=45, y=232)
 
         # Tạo Treeview (Bảng)
-        self.columns = ("invoice_id", "invoice_date", "hotel", "type_room", "quantity", "price", "total")
+        self.columns = ("invoice_id", "invoice_date", "hotel_name",  "quantity", "price", "total")
         self.tree = ttk.Treeview(self.table_frame, columns=self.columns, show="headings", height=10)
         self.tree.pack()
 
         # Thiết lập tiêu đề cột
         self.tree.heading("invoice_id", text="Invoice ID")
         self.tree.heading("invoice_date", text="Invoice Date")
-        self.tree.heading("hotel", text="Hotel")
-        self.tree.heading("type_room", text="Type Room")
+        self.tree.heading("hotel_name", text="Hotel")
+        
         self.tree.heading("quantity", text="Quantity")
         self.tree.heading("price", text="Price")
         self.tree.heading("total", text="Total")
@@ -104,8 +104,8 @@ class Admin_Users:
         # Điều chỉnh độ rộng cột (tổng width = 602)
         self.tree.column("invoice_id", width=80)
         self.tree.column("invoice_date", width=100)
-        self.tree.column("hotel", width=120)
-        self.tree.column("type_room", width=100)
+        self.tree.column("hotel_name", width=120)
+        
         self.tree.column("quantity", width=60)
         self.tree.column("price", width=60)
         self.tree.column("total", width=80)
@@ -124,9 +124,9 @@ class Admin_Users:
         for sale in sales_data:
             self.tree.insert("", "end", values=(
                 sale.get("invoice_id"),
-                sale.get("invoice_date").strftime("%Y-%m-%d") if sale.get("invoice_date") else "",
-                sale.get("hotel"),
-                sale.get("type_room"),
+                sale.get("invoice_date", ""),
+                sale.get("hotel_name", ""),
+                # sale.get("type_room"),
                 sale.get("quantity"),
                 sale.get("price"),
                 sale.get("total")
